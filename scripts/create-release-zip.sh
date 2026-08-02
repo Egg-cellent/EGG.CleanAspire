@@ -14,8 +14,8 @@ mkdir -p "$OUTPUT_DIR"
 cd "$REPO_ROOT" || exit 1
 
 # Clean build artifacts
-dotnet clean src/CWM.CleanArchitecture.slnx -c Debug --verbosity quiet 2>/dev/null
-dotnet clean src/CWM.CleanArchitecture.slnx -c Release --verbosity quiet 2>/dev/null
+dotnet clean src/EGG.CleanArchitecture.slnx -c Debug --verbosity quiet 2>/dev/null
+dotnet clean src/EGG.CleanArchitecture.slnx -c Release --verbosity quiet 2>/dev/null
 find . -type d \( -name bin -o -name obj \) -not -path './.git/*' -exec rm -rf {} + 2>/dev/null
 
 # Convert paths for PowerShell on Windows (Git Bash uses /c/ but pwsh needs C:\)
