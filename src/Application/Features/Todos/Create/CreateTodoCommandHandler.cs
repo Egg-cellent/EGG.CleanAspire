@@ -1,11 +1,12 @@
 using EGG.CleanAspire.Domain.Common;
 using EGG.CleanAspire.Domain.Entities;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Todos.Create;
 
 public sealed class CreateTodoCommandHandler(IAppDbContext dbContext) : ICommandHandler<CreateTodoCommand, Result<CreateTodoResponse>>
 {
-    public async Task<Result<CreateTodoResponse>> HandleAsync(CreateTodoCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask<Result<CreateTodoResponse>> Handle(CreateTodoCommand command, CancellationToken cancellationToken)
     {
         var todo = new TodoItem
         {

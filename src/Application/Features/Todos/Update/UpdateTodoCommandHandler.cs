@@ -1,10 +1,11 @@
 using EGG.CleanAspire.Domain.Common;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Todos.Update;
 
-public sealed class UpdateTodoCommandHandler(IAppDbContext dbContext) : ICommandHandler<UpdateTodoCommand>
+public sealed class UpdateTodoCommandHandler(IAppDbContext dbContext) : ICommandHandler<UpdateTodoCommand, Result>
 {
-    public async Task<Result> HandleAsync(UpdateTodoCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask<Result> Handle(UpdateTodoCommand command, CancellationToken cancellationToken)
     {
         var todo = await dbContext.Todos.FindAsync([command.Id], cancellationToken);
         if (todo is null)

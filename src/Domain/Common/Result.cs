@@ -25,8 +25,7 @@ public class Result
 
 public class Result<T> : Result
 {
-    internal Result(T? value, bool isSuccess, Error? error)
-        : base(isSuccess, error)
+    internal Result(T? value, bool isSuccess, Error? error) : base(isSuccess, error)
     {
         Value = value;
     }

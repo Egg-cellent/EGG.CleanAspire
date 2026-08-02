@@ -1,12 +1,13 @@
 using EGG.CleanAspire.Application.Features.Todos.Get;
 using EGG.CleanAspire.Domain.Common;
 using Microsoft.EntityFrameworkCore;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Todos.GetAll;
 
 public sealed class GetAllTodosQueryHandler(IAppDbContext dbContext) : IQueryHandler<GetAllTodosQuery, Result<PagedResult<TodoDetailResponse>>>
 {
-    public async Task<Result<PagedResult<TodoDetailResponse>>> HandleAsync(GetAllTodosQuery query, CancellationToken cancellationToken = default)
+    public async ValueTask<Result<PagedResult<TodoDetailResponse>>> Handle(GetAllTodosQuery query, CancellationToken cancellationToken)
     {
         var totalCount = await dbContext.Todos.CountAsync(cancellationToken);
 

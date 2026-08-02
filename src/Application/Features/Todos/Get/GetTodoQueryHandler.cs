@@ -1,10 +1,11 @@
 using EGG.CleanAspire.Domain.Common;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Todos.Get;
 
 public sealed class GetTodoQueryHandler(IAppDbContext dbContext) : IQueryHandler<GetTodoQuery, Result<TodoDetailResponse>>
 {
-    public async Task<Result<TodoDetailResponse>> HandleAsync(GetTodoQuery query, CancellationToken cancellationToken = default)
+    public async ValueTask<Result<TodoDetailResponse>> Handle(GetTodoQuery query, CancellationToken cancellationToken)
     {
         var todo = await dbContext.Todos.FindAsync([query.Id], cancellationToken);
         if (todo is null)

@@ -1,10 +1,8 @@
 using EGG.CleanAspire.Api.Extensions;
-using EGG.CleanAspire.Application.Abstractions.Identity;
-using EGG.CleanAspire.Application.Abstractions.Messaging;
 using EGG.CleanAspire.Application.Features.Identity.Login;
 using EGG.CleanAspire.Application.Features.Identity.RefreshToken;
 using EGG.CleanAspire.Application.Features.Identity.Register;
-using EGG.CleanAspire.Domain.Common;
+using Mediator;
 
 namespace EGG.CleanAspire.Api.Endpoints;
 
@@ -32,28 +30,28 @@ public static class IdentityEndpoints
 
     private static async Task<IResult> Register(
         RegisterCommand command,
-        ICommandHandler<RegisterCommand, Result> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.IsSuccess ? TypedResults.Ok() : result.ToProblemDetails();
     }
 
     private static async Task<IResult> Login(
         LoginCommand command,
-        ICommandHandler<LoginCommand, Result<TokenResponse>> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemDetails();
     }
 
     private static async Task<IResult> Refresh(
         RefreshTokenCommand command,
-        ICommandHandler<RefreshTokenCommand, Result<TokenResponse>> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemDetails();
     }
 }

@@ -6,7 +6,7 @@ namespace EGG.CleanAspire.Application.UnitTests.Features.Todos;
 public sealed class CreateTodoCommandHandlerTests
 {
     [Fact]
-    public async Task HandleAsync_Should_Return_Success_With_Created_Todo()
+    public async Task Handle_Should_Return_Success_With_Created_Todo()
     {
         // Arrange
         await using var dbContext = TestDbContextFactory.Create();
@@ -14,7 +14,7 @@ public sealed class CreateTodoCommandHandlerTests
         var command = new CreateTodoCommand("Test Todo", "Test Description");
 
         // Act
-        var result = await handler.HandleAsync(command, TestContext.Current.CancellationToken);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -24,7 +24,7 @@ public sealed class CreateTodoCommandHandlerTests
     }
 
     [Fact]
-    public async Task HandleAsync_Should_Persist_Title_And_Description()
+    public async Task Handle_Should_Persist_Title_And_Description()
     {
         // Arrange
         await using var dbContext = TestDbContextFactory.Create();
@@ -32,7 +32,7 @@ public sealed class CreateTodoCommandHandlerTests
         var command = new CreateTodoCommand("My Task", "Some details");
 
         // Act
-        await handler.HandleAsync(command, TestContext.Current.CancellationToken);
+        await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // Assert
         var todo = dbContext.Todos.Single();

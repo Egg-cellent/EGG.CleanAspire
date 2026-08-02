@@ -1,6 +1,7 @@
 using EGG.CleanAspire.Domain.Common;
 using EGG.CleanAspire.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Identity.Login;
 
@@ -8,7 +9,7 @@ public sealed class LoginCommandHandler(
     UserManager<ApplicationUser> userManager,
     ITokenService tokenService) : ICommandHandler<LoginCommand, Result<TokenResponse>>
 {
-    public async Task<Result<TokenResponse>> HandleAsync(LoginCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask<Result<TokenResponse>> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(command.Email);
         if (user is null)

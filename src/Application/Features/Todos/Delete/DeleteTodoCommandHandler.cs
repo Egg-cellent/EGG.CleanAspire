@@ -1,10 +1,11 @@
 using EGG.CleanAspire.Domain.Common;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Todos.Delete;
 
-public sealed class DeleteTodoCommandHandler(IAppDbContext dbContext) : ICommandHandler<DeleteTodoCommand>
+public sealed class DeleteTodoCommandHandler(IAppDbContext dbContext) : ICommandHandler<DeleteTodoCommand, Result>
 {
-    public async Task<Result> HandleAsync(DeleteTodoCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask<Result> Handle(DeleteTodoCommand command, CancellationToken cancellationToken)
     {
         var todo = await dbContext.Todos.FindAsync([command.Id], cancellationToken);
         if (todo is null)

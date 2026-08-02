@@ -8,7 +8,7 @@ namespace EGG.CleanAspire.Application.UnitTests.Features.Todos;
 public sealed class DeleteTodoCommandHandlerTests
 {
     [Fact]
-    public async Task HandleAsync_Should_Delete_Todo_When_Found()
+    public async Task Handle_Should_Delete_Todo_When_Found()
     {
         // Arrange
         await using var dbContext = TestDbContextFactory.Create();
@@ -19,7 +19,7 @@ public sealed class DeleteTodoCommandHandlerTests
         var handler = new DeleteTodoCommandHandler(dbContext);
 
         // Act
-        var result = await handler.HandleAsync(new DeleteTodoCommand(todo.Id), TestContext.Current.CancellationToken);
+        var result = await handler.Handle(new DeleteTodoCommand(todo.Id), TestContext.Current.CancellationToken);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -27,14 +27,14 @@ public sealed class DeleteTodoCommandHandlerTests
     }
 
     [Fact]
-    public async Task HandleAsync_Should_Return_NotFound_When_Missing()
+    public async Task Handle_Should_Return_NotFound_When_Missing()
     {
         // Arrange
         await using var dbContext = TestDbContextFactory.Create();
         var handler = new DeleteTodoCommandHandler(dbContext);
 
         // Act
-        var result = await handler.HandleAsync(new DeleteTodoCommand(Guid.NewGuid()), TestContext.Current.CancellationToken);
+        var result = await handler.Handle(new DeleteTodoCommand(Guid.NewGuid()), TestContext.Current.CancellationToken);
 
         // Assert
         result.IsFailure.Should().BeTrue();

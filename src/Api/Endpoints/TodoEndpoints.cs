@@ -1,12 +1,11 @@
 using EGG.CleanAspire.Api.Extensions;
-using EGG.CleanAspire.Application.Abstractions.Messaging;
 using EGG.CleanAspire.Application.Features.Todos.Complete;
 using EGG.CleanAspire.Application.Features.Todos.Create;
 using EGG.CleanAspire.Application.Features.Todos.Delete;
 using EGG.CleanAspire.Application.Features.Todos.Get;
 using EGG.CleanAspire.Application.Features.Todos.GetAll;
 using EGG.CleanAspire.Application.Features.Todos.Update;
-using EGG.CleanAspire.Domain.Common;
+using Mediator;
 
 namespace EGG.CleanAspire.Api.Endpoints;
 
@@ -48,29 +47,29 @@ public static class TodoEndpoints
     private static async Task<IResult> GetAll(
         int? page,
         int? pageSize,
-        IQueryHandler<GetAllTodosQuery, Result<PagedResult<TodoDetailResponse>>> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
         var query = new GetAllTodosQuery(page ?? 1, pageSize ?? 10);
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemDetails();
     }
 
     private static async Task<IResult> GetById(
         Guid id,
-        IQueryHandler<GetTodoQuery, Result<TodoDetailResponse>> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(new GetTodoQuery(id), cancellationToken);
+        var result = await sender.Send(new GetTodoQuery(id), cancellationToken);
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemDetails();
     }
 
     private static async Task<IResult> Create(
         CreateTodoCommand command,
-        ICommandHandler<CreateTodoCommand, Result<CreateTodoResponse>> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.IsSuccess
             ? TypedResults.CreatedAtRoute(result.Value, "GetTodoById", new { id = result.Value!.Id })
             : result.ToProblemDetails();
@@ -79,29 +78,29 @@ public static class TodoEndpoints
     private static async Task<IResult> Update(
         Guid id,
         UpdateTodoRequest request,
-        ICommandHandler<UpdateTodoCommand, Result> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
         var command = new UpdateTodoCommand(id, request.Title, request.Description);
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.IsSuccess ? TypedResults.NoContent() : result.ToProblemDetails();
     }
 
     private static async Task<IResult> Complete(
         Guid id,
-        ICommandHandler<CompleteTodoCommand, Result> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(new CompleteTodoCommand(id), cancellationToken);
+        var result = await sender.Send(new CompleteTodoCommand(id), cancellationToken);
         return result.IsSuccess ? TypedResults.NoContent() : result.ToProblemDetails();
     }
 
     private static async Task<IResult> Delete(
         Guid id,
-        ICommandHandler<DeleteTodoCommand, Result> handler,
+        ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(new DeleteTodoCommand(id), cancellationToken);
+        var result = await sender.Send(new DeleteTodoCommand(id), cancellationToken);
         return result.IsSuccess ? TypedResults.NoContent() : result.ToProblemDetails();
     }
 }

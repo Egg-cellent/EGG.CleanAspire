@@ -1,12 +1,13 @@
 using EGG.CleanAspire.Domain.Common;
 using EGG.CleanAspire.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Mediator;
 
 namespace EGG.CleanAspire.Application.Features.Identity.Register;
 
-public sealed class RegisterCommandHandler(UserManager<ApplicationUser> userManager) : ICommandHandler<RegisterCommand>
+public sealed class RegisterCommandHandler(UserManager<ApplicationUser> userManager) : ICommandHandler<RegisterCommand, Result>
 {
-    public async Task<Result> HandleAsync(RegisterCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask<Result> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         var existingUser = await userManager.FindByEmailAsync(command.Email);
         if (existingUser is not null)
