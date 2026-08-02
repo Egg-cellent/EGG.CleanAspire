@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Api/EGG.CleanAspire.Api.csproj" />
+    <Project Path="Application/EGG.CleanAspire.Application.csproj" />
+    <Project Path="Domain/EGG.CleanAspire.Domain.csproj" />
+    <Project Path="Infrastructure/EGG.CleanAspire.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/aspire/">
+    <Project Path="AppHost/EGG.CleanAspire.AppHost.csproj" />
+    <Project Path="ServiceDefaults/EGG.CleanAspire.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="../tests/Application.UnitTests/EGG.CleanAspire.Application.UnitTests.csproj" />
+    <Project Path="../tests/Architecture.Tests/EGG.CleanAspire.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
