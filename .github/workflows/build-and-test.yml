@@ -21,7 +21,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore src/CWM.CleanArchitecture.slnx
+        run: dotnet restore src/EGG.CleanArchitecture.slnx
 
       - name: Build
         run: dotnet build src/EGG.CleanArchitecture.slnx --no-restore --configuration Release --warnaserror
