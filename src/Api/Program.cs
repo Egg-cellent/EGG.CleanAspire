@@ -22,7 +22,7 @@ try
     builder.Host.UseSerilog((context, loggerConfiguration) =>
         loggerConfiguration.ReadFrom.Configuration(context.Configuration));
 
-    // Use traditional AddDbContext registration 
+    // Use traditional AddDbContext registration + EnrichNpgsqlDbContext
     //builder.AddNpgsqlDbContext<AppDbContext>("egg-db");
 
     // Aspire-managed Redis (for HybridCache L2)
@@ -32,7 +32,7 @@ try
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
 
-    // Aspire-managed NpgsqlDbContext 
+    // Aspire-managed NpgsqlDbContext telementry, health checks, and metrics
     builder.EnrichNpgsqlDbContext<AppDbContext>();
 
     // Global exception handling

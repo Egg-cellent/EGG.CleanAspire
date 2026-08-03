@@ -26,13 +26,12 @@ public static class DependencyInjection
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        string? connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<ISaveChangesInterceptor, AuditableInterceptor>();
 
         services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         {
-            options.UseNpgsql(connectionString, npgsqlOptions => { });
+            options.UseNpgsql(configuration.GetConnectionString("egg-db"), npgsqlOptions => { });
             options.AddInterceptors(serviceProvider.GetServices<ISaveChangesInterceptor>());
 
         });
